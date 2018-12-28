@@ -1,4 +1,4 @@
-REBOL [
+Red [
 	Title: "Rebol IDE Toolkit"
 	Date: 29-July-2013
 	File: %ide.r
@@ -8,19 +8,19 @@ REBOL [
 ]
 
 ide: context [
-	args: funct [word [any-type!]] [
+	args: func [word [any-type!]] [
 		spec-of :word
 	]
-	arg-hint: funct [ block [block!] ] [
+	arg-hint: func [ block [block!] ] [
 		foreach w block [
 			prin mold w
 			prin " :: "
-			if res: args w 
+			if res: args w
 			[ print mold res ]
 			[ print " " ]
-		] 
+		]
 	]
-	completions-in: funct ['word [any-type!]] [
+	completions-in: func ['word [any-type!]] [
 		wd: get :word
 		case [
 			object? wd [ collect [ foreach [word val] wd [ keep word ]]]
@@ -28,7 +28,7 @@ ide: context [
 	]
 
 	;; used to generate the highlighting keywords
-	search-lib: funct [ type ] [
+	search-lib: func [ type ] [
 		ty: form type
 		foreach [ word val ] lib [
 			if ty = form type?/word :val [
@@ -36,7 +36,7 @@ ide: context [
 			]
 		]
 	]
-	symbol-group: funct [ label types ] [
+	symbol-group: func [ label types ] [
 		prin "R3IDE-NEW-KEYWORDS: "
 		print label
 		foreach t types [
@@ -44,25 +44,25 @@ ide: context [
 		] test
 		none
 	]
-	types: funct [] [ symbol-group "types" [ datatype! typeset! ] ]	
-	keywords: funct [] [ symbol-group "keywords" [ action! native! op!]]
-	functions: funct [] [ symbol-group "functions" [ function! ] ]
+	types: func [] [ symbol-group "types" [ datatype! typeset! ] ]
+	keywords: func [] [ symbol-group "keywords" [ action! native! op!]]
+	funcions: func [] [ symbol-group "funcions" [ funcion! ] ]
 
 	;; used for stuff
-	show-help: funct [ 'word ] [
+	show-help: func [ 'word ] [
 		prin "R3IDE-HELP: "
 		print word
 		help :word
 	]
-	show-source: funct [ 'word ] [
+	show-source: func [ 'word ] [
 		print "R3IDE-SOURCE"
 		source :word
 	]
-	load: funct [ str ] [ 
+	load: func [ str ] [
 		;; FAILED on failure
 		;; SUCCESS + list of new bindings on success
 		if error? try [ do to-file str ] [ print "FAILED LOAD"]
 		;; do symbol pulling here
-	] 
+	]
 	;; autocomplete-dict -- should generate a rebol-mode dict for auto-complete mode
 ]
